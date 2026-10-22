@@ -31,7 +31,18 @@
 #navigation .phase.active{border-color:var(--phase-accent);border-left-width:5px;box-shadow:0 0 0 2px var(--phase-line),0 6px 16px #28304b17;transform:translateY(-1px)}
 #navigation .phase:focus-visible{outline:3px solid #3744aa;outline-offset:3px}
 @media(max-width:760px){#navigation{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}#navigation .phase{min-height:59px;padding:8px 9px}#navigation .phase-title{font-size:13px}#navigation .phase-mode{font-size:9px}}
-.photo-picker{cursor:pointer;background:#fff;border:1px solid #d8dfeb;border-radius:8px;padding:10px 13px;font-size:13px;font-weight:650;color:#344054}.camera{cursor:default}.row.wrap{flex-wrap:wrap}.observation-media{margin:13px 0}.media-preview{display:block;width:100%;padding:0;margin-top:9px;background:#f0f3f8;border:1px solid #dce2ea;border-radius:9px;overflow:hidden;min-height:150px}.media-preview img{display:block;width:100%;max-height:240px;object-fit:contain}.media-error{display:block;padding:55px 8px;color:#64748b}.observation-media .micro{margin:7px 0 0}</style></head><body>
+.photo-picker{cursor:pointer;background:#fff;border:1px solid #d8dfeb;border-radius:8px;padding:10px 13px;font-size:13px;font-weight:650;color:#344054}.camera{cursor:default}.row.wrap{flex-wrap:wrap}.observation-media{margin:13px 0}.media-preview{display:block;width:100%;padding:0;margin-top:9px;background:#f0f3f8;border:1px solid #dce2ea;border-radius:9px;overflow:hidden;min-height:150px}.media-preview img{display:block;width:100%;max-height:240px;object-fit:contain}.media-error{display:block;padding:55px 8px;color:#64748b}.observation-media .micro{margin:7px 0 0}
+/* Desktop workspaces fill the available viewport; phone frame only applies to Capture and Review. */
+@media(min-width:641px){
+.workspace.board,.workspace.areas{width:100%;max-width:none;margin:16px auto 35px;padding:0 clamp(14px,2vw,32px)}
+.workspace.board .desktop,.workspace.areas .desktop{width:100%;max-width:none}
+.workspace.board .board{width:100%;grid-template-columns:repeat(4,minmax(0,1fr))}
+.workspace.board .lane{width:auto;min-width:0}
+}
+@media(min-width:641px) and (max-width:1000px){
+.workspace.board .board{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style></head><body>
 <header><div><div class="brand">◈ AuditCore</div><small>Lean management platform</small></div><div style="text-align:right;font-size:13px">Waste Journey<br><small>Public UX prototype · Epic #240</small></div></header>
 <nav id="navigation" aria-label="Waste Journey phases"><button data-page="capture" class="phase phase-1 active"><span class="phase-kicker">PHASE 1 <span class="phase-mode">Mobile-first</span></span><span class="phase-title">📷 Capture</span></button><button data-page="review" class="phase phase-2"><span class="phase-kicker">PHASE 2 <span class="phase-mode">Mobile-first</span></span><span class="phase-title">☑ Review</span></button><button data-page="board" class="phase phase-3"><span class="phase-kicker">PHASE 3 <span class="phase-mode">Desktop only</span></span><span class="phase-title">▦ Analyze</span></button><button data-page="areas" class="phase phase-4"><span class="phase-kicker">PHASE 4 <span class="phase-mode">Desktop only</span></span><span class="phase-title">⌖ Standardize</span></button></nav>
 <main id="workspace" class="workspace capture"></main><div id="dialog"></div>
