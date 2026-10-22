@@ -74,7 +74,17 @@ const categories=['Unclassified','Waiting','Transport','Motion','Inventory','Def
 const photos=['https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=480&q=70','https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=480&q=70','https://images.unsplash.com/photo-1565793298595-6ba8978b2826?w=480&q=70','https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=480&q=70'];
 let areas=[{id:1,name:'Packing',standard:'yes'},{id:2,name:'Warehouse',standard:'no'},{id:3,name:'Assembly',standard:'yes'},{id:4,name:'Cutting line',standard:'review'}];
 const seed=[['Pallets blocking pedestrian aisle','Waiting',2,0,2],['Tools outside marked positions','Motion',3,1,1],['Unlabelled material containers','Inventory',2,0,2],['Packaging waste on floor','Defects',1,2,1],['Excess finished goods stock','Inventory',1,0,1],['Unnecessary walking to collect tools','Motion',3,1,1],['Damaged pallet near dispatch','Defects',2,2,2],['Material flow stops at transfer point','Waiting',null,3,1],['Extra handling between stations','Transport',4,1,1],['Duplicate manual inspection step','Overprocessing',4,3,0]];
-let notes=seed.map((v,i)=>({id:i+1,title:v[0],cat:v[1],area:v[2],img:v[3],photos:v[4],tasks:0,draft:false,type:'Not assessed',fiveS:'Not assessed',impact:'Not assessed',rootCause:'',problem:'',coverage:'Not assessed',verified:false}));let page='capture',nextId=11,upload=null,drag=null;
+let notes=seed.map((v,i)=>({id:i+1,title:v[0],cat:v[1],area:v[2],img:v[3],photos:v[4],tasks:0,draft:false,type:'Not assessed',fiveS:'Not assessed',impact:'Not assessed',rootCause:'',problem:'',coverage:'Not assessed',verified:false}));
+const sampleLean=[
+{type:'Safety',fiveS:'Set in Order',impact:'High',problem:'Blocked logistics routes',rootCause:'Temporary staging areas may not be defined',coverage:'No relevant standard'},
+{type:'5S deviation',fiveS:'Set in Order',impact:'Medium',problem:'Tool availability',rootCause:'Return positions may not be clearly marked',coverage:'Covered but not followed'},
+{type:'5S deviation',fiveS:'Sort',impact:'Medium',problem:'Material identification',coverage:'Standard incomplete'},
+{type:'5S deviation',fiveS:'Shine',impact:'Medium',problem:'Workplace cleanliness',coverage:'Covered but not followed'},
+{type:'Lean waste',fiveS:'Sort',impact:'High',problem:'Excess inventory',coverage:'Covered and followed'},
+{type:'Lean waste',fiveS:'Set in Order',impact:'Medium',problem:'Tool availability',coverage:'Standard incomplete'},
+{type:'Safety',fiveS:'Set in Order',impact:'High',problem:'Blocked logistics routes',coverage:'No relevant standard'}
+];notes.forEach((n,i)=>{if(sampleLean[i])Object.assign(n,sampleLean[i])});
+let page='capture',nextId=11,upload=null,drag=null;
 let cameraStream=null;
 function stopCamera(){if(cameraStream){cameraStream.getTracks().forEach(track=>track.stop());cameraStream=null}dlg.querySelector('video')?.pause()}
 async function openCamera(){
