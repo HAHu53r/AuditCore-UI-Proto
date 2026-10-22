@@ -49,6 +49,18 @@
 main.workspace.board{display:block!important;grid-template-columns:none!important}
 main.workspace.board>.desktop{display:block;width:100%;min-width:0}
 main.workspace.board .desktop>.board{display:grid;width:100%}
+
+/* Always-accessible phase navigation on phones. */
+@media(max-width:640px){
+#navigation{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:none;margin:0;padding:9px 12px calc(9px + env(safe-area-inset-bottom, 0px));background:#fff;box-shadow:0 -4px 18px #19263b24;border-top:1px solid #dce2ec}
+#navigation .phase-3,#navigation .phase-4{display:none}
+#navigation .phase{min-height:55px;justify-content:center}
+#navigation .phase-title{font-size:14px}
+#navigation .phase-kicker{font-size:10px}
+main.workspace{padding-bottom:calc(100px + env(safe-area-inset-bottom, 0px))}
+footer{padding-bottom:calc(104px + env(safe-area-inset-bottom, 0px))}
+.workspace.capture .bottom{position:relative}
+}
 </style></head><body>
 <header><div><div class="brand">◈ AuditCore</div><small>Lean management platform</small></div><div style="text-align:right;font-size:13px">Waste Journey<br><small>Public UX prototype · Epic #240</small></div></header>
 <nav id="navigation" aria-label="Waste Journey phases"><button data-page="capture" class="phase phase-1 active"><span class="phase-kicker">PHASE 1 <span class="phase-mode">Mobile-first</span></span><span class="phase-title">📷 Capture</span></button><button data-page="review" class="phase phase-2"><span class="phase-kicker">PHASE 2 <span class="phase-mode">Mobile-first</span></span><span class="phase-title">☑ Review</span></button><button data-page="board" class="phase phase-3"><span class="phase-kicker">PHASE 3 <span class="phase-mode">Desktop only</span></span><span class="phase-title">▦ Analyze</span></button><button data-page="areas" class="phase phase-4"><span class="phase-kicker">PHASE 4 <span class="phase-mode">Desktop only</span></span><span class="phase-title">⌖ Standardize</span></button></nav>
@@ -94,7 +106,7 @@ function areasPage(){workspace.innerHTML='<div class="desktop"><div class="row b
 function draw(){workspace.className='workspace '+page;document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));({capture,review,board,areas:areasPage})[page]()}
 function edit(id){let n=notes.find(n=>n.id===id);if(!n)return;const media=n.photos?'<div class="observation-media"><div class="row between"><b>Photos</b>'+photoBadge(n)+'</div><button type="button" class="media-preview" data-act="zoom:'+id+'" aria-label="View observation photo larger"><img src="'+E(img(n))+'" alt="Photo attached to observation #'+n.id+'" onerror="this.style.display=\'none\';this.parentElement.insertAdjacentHTML(\'beforeend\',\'<span class=media-error>Photo unavailable</span>\')"></button>'+(n.photos>1?'<p class="micro">Sample data indicates '+n.photos+' photos; only one illustrative image is available in this prototype.</p>':'')+'</div>':'';dlg.innerHTML='<div class="overlay"><div class="dialog"><div class="row between"><h2>Observation #'+n.id+'</h2>'+B('✕','close')+'</div>'+media+'<label class="label">Description</label><textarea id="etitle">'+E(n.title)+'</textarea><label class="label">Waste category</label><select id="ecat">'+catOptions(n.cat)+'</select><label class="label">Area</label><select id="earea">'+areaOptions(n.area)+'</select><p class="hint">Tasks represent corrective actions; creating one does not mean the issue is resolved. Draft standards require a real target area.</p><div class="row wrap">'+B('＋ Task (demo)','task:'+id)+B(n.draft?'Draft already linked':'＋ Standard draft','draft:'+id)+'</div><div class="row between" style="margin-top:12px">'+B('Cancel','close')+B('Save changes','saveedit:'+id,'primary')+'</div></div></div>'}
 function areaEdit(id){const a=A(id);if(!a)return;dlg.innerHTML='<div class="overlay"><div class="dialog"><div class="row between"><h2>Edit area</h2>'+B('✕','close')+'</div><label class="label">Area</label><input id="aname" value="'+E(a.name)+'"><label class="label">Standard coverage (demo)</label><select id="astatus"><option value="yes" '+(a.standard==='yes'?'selected':'')+'>Standard exists</option><option value="no" '+(a.standard==='no'?'selected':'')+'>No standard</option><option value="review" '+(a.standard==='review'?'selected':'')+'>Needs review</option></select>'+B('Save area','savearea:'+id,'primary wide')+'</div></div>'}
-document.addEventListener('click',e=>{let b=e.target.closest('[data-page]');if(b){page=b.dataset.page;draw();return}b=e.target.closest('[data-act]');if(!b)return;let [act,raw]=b.dataset.act.split(':'),id=Number(raw),n=notes.find(x=>x.id===id);
+document.addEventListener('click',e=>{let b=e.target.closest('[data-page]');if(b){stopCamera();page=b.dataset.page;draw();window.scrollTo({top:0,behavior:'auto'});return}b=e.target.closest('[data-act]');if(!b)return;let [act,raw]=b.dataset.act.split(':'),id=Number(raw),n=notes.find(x=>x.id===id);
 if(['capture','review','board','areas'].includes(act)){stopCamera();page=act;draw();return}
 if(act==='openCamera'){openCamera();return}
 if(act==='snapCamera'){snapCamera();return}
